@@ -1,19 +1,40 @@
-const ProductCard = ( {precio} ) => {
+import * as React from 'react';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import {Link} from "react-router-dom"
+
+const ProductCard = ( {title, price, image, author, genre, stock, id} ) => {
+    console.log("titulo en ProductCard:", title);  // Verifica si 'titulo' llega correctamente
+    console.log("precio en ProductCard:", price);
     return (
     <div>
-        <div className="container">
-            <img src="https://http2.mlstatic.com/D_NQ_NP_614549-MLU74239944481_012024-O.webp" alt="" />
-            <h5>precio: {precio}</h5>
-        </div>
-        <div className="container">
-            <img src="https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1649928964-51joU69wSPS._SL500_.jpg?crop=1xw:1xh;center,top&resize=980:*" alt="" />
-            <h5>precio: {precio}</h5>
-        </div>
-        <div className="container">
-            <img src="https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1649929060-51dL0EfkinL._SL500_.jpg?crop=1xw:1xh;center,top&resize=980:*" alt="" />
-            <h5>precio: {precio}</h5>
-        </div>
+        <Card sx={{ maxWidth: 500 }}>
+      <CardMedia
+        sx={{ height: 140 }}
+        image={image}
+        title={title}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          {title}
+        </Typography>
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          {author} &nbsp; &nbsp; &nbsp; {genre} &nbsp; &nbsp; &nbsp; {stock} disponibles
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Link to={`/item/${id}`}>
+        <Button size="small">ver detalles</Button>
+        </Link>
+      </CardActions>
+    </Card>
     </div>
+    
+    
     );
   }
   
