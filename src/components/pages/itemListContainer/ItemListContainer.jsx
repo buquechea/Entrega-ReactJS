@@ -1,31 +1,33 @@
-import ProductCard from "../../common/productCard/ProductCard";
 import { useState, useEffect } from 'react';
-import { products } from "../../../Item"
-import ItemList from "./ItemList";
+import { collection, getDocs } from 'firebase/firestore';
+import {db} from '../../../fireBaseConfig'; 
+import ItemList from './ItemList';
 
 const ItemListContainer = () => {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
-        const getProducts = new Promise((res) => {
-            console.log("Productos obtenidos en ItemListContainer:", products);
-            setTimeout(() =>{
-                res (products)
-            }, 2000); // Simulación de carga
-        });
+        const fetchProducts = async () => {
+            try {
+                const productsCollection = collection(db, "products"); 
+                const productSnapshot = await getDocs(productsCollection);
+                const productList = productSnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                console.log("Productos obtenidos: ", productList);
+                setItems(productList);
+            } catch (error) {
+                console.log("Ocurrió un error al obtener los productos:", error);
+            }
+        };
 
-        getProducts.then((response) => {
-            console.log("Productos obtenidos: ", response);
-            setItems(response); // Actualiza el estado con los productos
-        }).catch((error) => {
-            console.log("Ocurrió un error al obtener los productos", error);
-        });
+        fetchProducts();
     }, []);
 
     return (
         <ItemList items={items} />
-    )
+    );
 };
-
 
 export default ItemListContainer;
